@@ -8,14 +8,16 @@ const UseCallbackComp = () => {
     setInputValue(e.target.value)
   }
   const handleAddSkill = useCallback((e) => {
-    e.preventDefault()
-    setSkillList(prevSkills => [...prevSkills, inputValue])
-    setInputValue("")
-  }, [inputValue])
+    e.preventDefault();
+    const trimmedInput = inputValue.trim();
+    if (trimmedInput === "" || skillList.includes(trimmedInput)) return;
+    setSkillList(prevSkills => [...prevSkills, trimmedInput]);
+    setInputValue("");
+  }, [inputValue, skillList]);
+
   const handleSkillDelete = useCallback((value) => {
-    const filteredSkills = skillList.filter(skill => skill !== value)
-    setSkillList(filteredSkills)
-  }, [])
+    setSkillList(prevSkills => prevSkills.filter(skill => skill !== value));
+  }, []);
   return (
     <div className='main-container'>
       <form onSubmit={(e) => handleAddSkill(e)}>
