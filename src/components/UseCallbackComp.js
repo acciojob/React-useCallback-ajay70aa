@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import SkillList from './SkillList'
 
 const UseCallbackComp = () => {
@@ -7,24 +7,27 @@ const UseCallbackComp = () => {
   function handleInputChange(e){
     setInputValue(e.target.value)
   }
-  function handleAddSkill(){
-    setSkillList([...skillList, inputValue])
+  const handleAddSkill = useCallback((e) => {
+    e.preventDefault()
+    setSkillList(prevSkills => [...prevSkills, inputValue])
     setInputValue("")
-  }
-  function handleSkillDelete(value){
+  }, [inputValue])
+  const handleSkillDelete = useCallback((value) => {
     const filteredSkills = skillList.filter(skill => skill !== value)
     setSkillList(filteredSkills)
-  }
+  }, [])
   return (
     <div className='main-container'>
-      <input 
-        type='text' 
-        placeholder='Enter skill'
-        value={inputValue}
-        onChange={(e) => handleInputChange(e)}
-        id='inputValue'
-      />
-      <button onClick={handleAddSkill} id='addBtn'>Add Skill</button>
+      <form onSubmit={(e) => handleAddSkill(e)}>
+        <input 
+          type='text' 
+          placeholder='Enter skill'
+          value={inputValue}
+          onChange={(e) => handleInputChange(e)}
+          id='skill-input'
+        />
+        <button type='submit' id='skill-add-btn'>Add Skill</button>
+      </form>
       <SkillList skills={skillList} onDelete={handleSkillDelete}/>
     </div>
   )

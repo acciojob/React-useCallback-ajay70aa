@@ -6,7 +6,7 @@ const SkillList = ({skills, onDelete}) => {
       <ul>
         {skills.map((skill, index) => {
           return (
-            <li key={index}>{skill} <button onClick={() => onDelete(skill)}>Delete</button></li>
+            <li key={index} id="skill-number-idx">{skill} <button onClick={() => onDelete(skill)}>Delete</button></li>
           )
         })}
       </ul>
